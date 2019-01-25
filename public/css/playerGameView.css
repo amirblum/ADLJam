@@ -1,6 +1,6 @@
 html, body { height: 90%; padding: 0; margin: 0; }
 button{
-    width: 50%; height: 50%; float: left;
+    width: 10%; height: 10%; float: right;
 }
 #answer1{
     background-color: #4CAF50;
@@ -27,6 +27,12 @@ button{
     padding: 0px 10px;
 }
 #message{
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    font-size: 35px;
+}
+
+#text {
     font-family: 'Raleway', sans-serif;
     text-align: center;
     font-size: 35px;
