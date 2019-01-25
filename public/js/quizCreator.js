@@ -2,6 +2,7 @@ var socket = io();
 var questionNum = 1; //Starts at two because question 1 is already present
 
 function updateDatabase(){
+    //################################
     var questions = [];
     var name = document.getElementById('name').value;
     for(var i = 1; i <= questionNum; i++){
@@ -26,6 +27,9 @@ function addQuestion(){
     var questionLabel = document.createElement('label');
     var questionField = document.createElement('input');
     
+    var imageLabel = document.createElement('label');
+    var imageField = document.createElement('input');
+    
     
     sceneLabel.innerHTML = "Scene " + String(questionNum) + ": ";
     sceneField.setAttribute('class', 'scene');
@@ -41,6 +45,14 @@ function addQuestion(){
     questionField.setAttribute('id', 'q' + String(questionNum));
     questionField.setAttribute('type', 'text');
     questionField.setAttribute('size', "53");
+
+    imageLabel.innerHTML = "Image url " + String(questionNum) + ": ";
+    imageField.setAttribute('class', 'question');
+    imageField.setAttribute('id', 'img' + String(questionNum));
+    imageField.setAttribute('type', 'text');
+    imageField.setAttribute('size', "53");
+    
+    
     
     
     newQuestionDiv.setAttribute('id', 'question-field');//Sets class of div
@@ -56,6 +68,13 @@ function addQuestion(){
 
     newQuestionDiv.appendChild(questionLabel);
     newQuestionDiv.appendChild(questionField);
+
+    newQuestionDiv.appendChild(document.createElement('br'));
+    newQuestionDiv.appendChild(document.createElement('br'));
+
+    newQuestionDiv.appendChild(imageLabel);
+    newQuestionDiv.appendChild(imageField);
+
 
     
     questionsDiv.appendChild(document.createElement('br'));//Creates a break between each question
@@ -79,9 +98,13 @@ socket.on('startGameFromCreator', function(data){
 });
 
 function randomColor(){
-    green='#008b43'
-    purple="#702c92"
-    return '#008b43';
+    purple='#ccc1d3'
+    green="#adbcb4"
+    color=green
+    if(questionNum % 2){
+        color=purple
+    }
+    return color;
 }
 
 function setBGColor(){
