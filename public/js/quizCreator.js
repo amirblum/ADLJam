@@ -19,29 +19,51 @@ function addQuestion(){
     var questionsDiv = document.getElementById('allQuestions');
     
     var newQuestionDiv = document.createElement("div");
-    
+
+    var sceneLabel = document.createElement('label');
+    var sceneField = document.createElement('textarea');
+
     var questionLabel = document.createElement('label');
     var questionField = document.createElement('input');
     
     
+    sceneLabel.innerHTML = "Scene " + String(questionNum) + ": ";
+    sceneField.setAttribute('class', 'scene');
+    sceneField.setAttribute('id', 's' + String(questionNum));
+    sceneField.maxLength = "5000";
+    sceneField.cols = "53";
+    sceneField.rows = "10";
+    sceneField.setAttribute('type', 'text');
+
+
     questionLabel.innerHTML = "Question " + String(questionNum) + ": ";
     questionField.setAttribute('class', 'question');
     questionField.setAttribute('id', 'q' + String(questionNum));
     questionField.setAttribute('type', 'text');
+    questionField.setAttribute('size', "53");
     
     
     newQuestionDiv.setAttribute('id', 'question-field');//Sets class of div
     
     //need?
+
+    
+    newQuestionDiv.appendChild(sceneLabel);
+    newQuestionDiv.appendChild(sceneField);
+
+    newQuestionDiv.appendChild(document.createElement('br'));
+    newQuestionDiv.appendChild(document.createElement('br'));
+
     newQuestionDiv.appendChild(questionLabel);
     newQuestionDiv.appendChild(questionField);
-    newQuestionDiv.appendChild(document.createElement('br'));
-    newQuestionDiv.appendChild(document.createElement('br'));
 
     
     questionsDiv.appendChild(document.createElement('br'));//Creates a break between each question
     questionsDiv.appendChild(newQuestionDiv);//Adds the question div to the screen
     
+    newQuestionDiv.appendChild(document.createElement('br'));
+    newQuestionDiv.appendChild(document.createElement('br'));
+
     newQuestionDiv.style.backgroundColor = randomColor();
 }
 
@@ -57,10 +79,9 @@ socket.on('startGameFromCreator', function(data){
 });
 
 function randomColor(){
-    
-    var colors = ['#4CAF50', '#f94a1e', '#3399ff', '#ff9933'];
-    var randomNum = Math.floor(Math.random() * 4);
-    return colors[randomNum];
+    green='#008b43'
+    purple="#702c92"
+    return '#008b43';
 }
 
 function setBGColor(){

@@ -4,10 +4,18 @@
         <title>Creator | KahootClone</title>
         <link rel = "stylesheet" href = "../../css/quizCreator.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <style>
+        .form-field { width: 400px; }
+        label { float: left; width: 150px; }
+        input { float: left; width: 250px; }
+        .clear { clear: both; height: 0; line-height: 0; }
+        .floatright { float: right; }
+        </style>
     </head>
     <body onload = "setBGColor()">
         <h1 id = "title">Kahoot Quiz Creator Studio</h1>
         
+
         <div class="form-field">
             <label id = "quizTitle">Quiz Title</label>
             <input id = "name" type = "text" name="name" autofocus/>
@@ -16,15 +24,21 @@
         <br>
         <div id = "allQuestions">\\add also imege
             <div id="question-field">
+                <label>Scene 1: </label>
+                <!-- <input class = "question" id = "q1" type = "text" autofocus/> -->
+                <textarea rows="10" cols="53" name="comment" form="usrform"></textarea>
+                <br>
+                <br>
                 <label>Question 1: </label>
-                <input class = "question" id = "q1" type = "text" autofocus/>
+                <input class = "question" id = "q1" size="100" type = "text" autofocus/>
                 <br>
                 <br>
+                <br class="clear" />
+                <br />
             </div>
         </div>
         <br>
-        <button onclick = "addQuestion()">Add another question</button>
-        
+        <button onclick = "addQuestion()">Add another question</button>       
         
         <br>
         <br>
