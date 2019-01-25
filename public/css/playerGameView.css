@@ -1,10 +1,10 @@
 html, body { height: 90%; padding: 0; margin: 0; }
-button{
-    width: 50%; height: 50%; float: left;
-}
-#answer1{
+/* button{
+    width: 10%; height: 10%; float: right;
+} */
+/* #answer1{
     background-color: #4CAF50;
-}
+} */
 #answer2{
     background-color: #f94a1e;
 }
@@ -30,4 +30,34 @@ button{
     font-family: 'Raleway', sans-serif;
     text-align: center;
     font-size: 35px;
+}
+
+#text {
+    width: 80%;
+    padding: 12px 0px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 20px;
+    text-align: center;
+}
+#answer1 {
+    width: 50%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 20px;
+    background-color: #3A3B3A;
+    font-family: 'Raleway', sans-serif;
 }
