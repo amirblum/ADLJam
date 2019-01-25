@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
                 if(result[0] !== undefined){
                     var gamePin = Math.floor(Math.random()*90000) + 10000; //new pin for game
 
-                    games.addGame(gamePin, socket.id, false, {playersAnswered: 0, questionLive: false, gameid: data.id, question: 1}); //Creates a game with pin and host id
+                    games.addGame(gamePin, socket.id, false, {playersAnswered: 0, playersVoted: 0, questionLive: false, pollingLive: false, gameid: data.id, question: 1}); //Creates a game with pin and host id
 
                     var game = games.getGame(socket.id); //Gets the game data
 
@@ -213,43 +213,45 @@ io.on('connection', (socket) => {
         if(game.gameData.questionLive == true){//if the question is still live
             player.gameData.answer = answer;
             game.gameData.playersAnswered += 1;
-            
-            var gameQuestion = game.gameData.question;
-            var gameid = game.gameData.gameid;
-            
-            MongoClient.connect(url, function(err, db){
-                if (err) throw err;
-    
-                var dbo = db.db('kahootDB');
-                var query = { id:  parseInt(gameid)};
-                dbo.collection("kahootGames").find(query).toArray(function(err, res) {
-                    if (err) throw err;
-                    //Checks player answer with correct answer
-                    // if(answer == correctAnswer){
-                        player.gameData.score += 100;
-                        io.to(game.pin).emit('getTime', socket.id);
-                        socket.emit('answerResult', true);
-                    // }
 
-                    //Checks if all players answered
-                    if(game.gameData.playersAnswered == playerNum.length){
-                        game.gameData.questionLive = false; //Question has been ended bc players all answered under time
-                        var playerData = players.getPlayers(game.hostId);
-                        io.to(game.pin).emit('questionOver', playerData);//Tell everyone that question is over
-                    }else{
-                        //update host screen of num players answered
-                        io.to(game.pin).emit('updatePlayersAnswered', {
-                            playersInGame: playerNum.length,
-                            playersAnswered: game.gameData.playersAnswered
-                        });
-                    }
-                    
-                    db.close();
+            //Checks if all players answered
+            if(game.gameData.playersAnswered == playerNum.length){
+                game.gameData.questionLive = false; //Question has been ended bc players all answered under time
+                var playerData = players.getPlayers(game.hostId);
+                io.to(game.pin).emit('questionOver', playerData);//Tell everyone that question is over
+            }else{
+                //update host screen of num players answered
+                io.to(game.pin).emit('updatePlayersAnswered', {
+                    playersInGame: playerNum.length,
+                    playersAnswered: game.gameData.playersAnswered
                 });
-            });
-            
-            
-            
+            }
+        }
+    });
+
+    //Sets data in player class to answer from player
+    socket.on('playerVote', function(voteID){
+        var votedForPlayer = players.getPlayer(voteID);
+        var hostId = player.hostId;
+        var playerNum = players.getPlayers(hostId);
+        var game = games.getGame(hostId);
+        if(game.gameData.questionLive == true) {//if the voting is still live
+            votedForPlayer.gameData.numVotes++;
+            votedForPlayer.gameData.score += 100;
+            game.gameData.playersVoted += 1;
+
+            //Checks if all players voted
+            if(game.gameData.playersVoted == playerNum.length){
+                game.gameData.pollingLive = false; //Polling has been ended bc players all voted
+                var playerData = players.getPlayers(game.hostId);
+                io.to(game.pin).emit('pollingOver', playerData);//Tell everyone that polling is over
+            }else{
+                //update host screen of num players answered
+                io.to(game.pin).emit('updatePlayersVoted', {
+                    playersInGame: playerNum.length,
+                    playersVoted: game.gameData.playersVoted
+                });
+            }
         }
     });
     
@@ -265,38 +267,13 @@ io.on('connection', (socket) => {
         var player = players.getPlayer(playerid);
         player.gameData.score += time;
     });
-    
-    
-    
-    socket.on('collectAnswers', function(){
-        var game = games.getGame(socket.id);
-        game.gameData.questionLive = false;
-        var playerData = players.getPlayers(game.hostId);
-        
-        var gameQuestion = game.gameData.question;
-        var gameid = game.gameData.gameid;
-            
-            MongoClient.connect(url, function(err, db){
-                if (err) throw err;
-    
-                var dbo = db.db('kahootDB');
-                var query = { id:  parseInt(gameid)};
-                dbo.collection("kahootGames").find(query).toArray(function(err, res) {
-                    if (err) throw err;
-                    io.to(game.pin).emit('questionOver', playerData);
-                    
-                    db.close();
-                });
-            });
-    });
-    
+       
     socket.on('nextQuestion', function(){
         var playerData = players.getPlayers(socket.id);
         //Reset players current answer to 0
         for (var i = 0; i < Object.keys(players.players).length; i++) {
             if (players.players[i].hostId == socket.id) {
                 players.players[i].gameData.answer = '';
-                // Todo: float array of other answers rating
             }
         }
         
@@ -305,8 +282,6 @@ io.on('connection', (socket) => {
         game.gameData.questionLive = true;
         game.gameData.question += 1;
         var gameid = game.gameData.gameid;
-        
-        
         
         MongoClient.connect(url, function(err, db){
                 if (err) throw err;
@@ -319,8 +294,10 @@ io.on('connection', (socket) => {
                     if(res[0].questions.length >= game.gameData.question){
                         var questionNum = game.gameData.question;
                         questionNum = questionNum - 1;
+
+                        var scene = res[0].questions[questionNum].scene;
                         var question = res[0].questions[questionNum].question;
-                        var answer = res[0].questions[questionNum].answer;
+                        var img = res[0].questions[questionNum].img;
 
                         socket.emit('gameQuestions', {
                             scene: scene,
@@ -328,6 +305,7 @@ io.on('connection', (socket) => {
                             img: img,
                             playersInGame: playerData.length
                         });
+                        
                         db.close();
                     
                         io.to(game.pin).emit('nextQuestionPlayer', { question: question});
@@ -414,6 +392,35 @@ io.on('connection', (socket) => {
                 
             });
         
+    });
+
+    socket.on('collectAnswers', function(){
+        var game = games.getGame(socket.id);
+        game.gameData.questionLive = false;
+
+        var playerData = players.getPlayers(game.hostId);
+        io.to(game.pin).emit('questionOver', playerData);
+    });
+
+    socket.on('collectPolls', function(){
+        var game = games.getGame(socket.id);
+        game.gameData.pollingLive = false;
+        var playerData = players.getPlayers(game.hostId);
+        
+        var gameid = game.gameData.gameid;
+            
+            MongoClient.connect(url, function(err, db){
+                if (err) throw err;
+    
+                var dbo = db.db('kahootDB');
+                var query = { id:  parseInt(gameid)};
+                dbo.collection("kahootGames").find(query).toArray(function(err, res) {
+                    if (err) throw err;
+                    io.to(game.pin).emit('pollingOver', playerData);
+                    
+                    db.close();
+                });
+            });
     });
     
     //When the host starts the game
