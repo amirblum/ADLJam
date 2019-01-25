@@ -11,9 +11,9 @@ socket.on('connect', function() {
     socket.emit('player-join-game', params);
     
     document.getElementById('answer1').style.visibility = "visible";
-    document.getElementById('answer2').style.visibility = "visible";
-    document.getElementById('answer3').style.visibility = "visible";
-    document.getElementById('answer4').style.visibility = "visible";
+    // document.getElementById('answer2').style.visibility = "visible";
+    // document.getElementById('answer3').style.visibility = "visible";
+    // document.getElementById('answer4').style.visibility = "visible";
 });
 
 socket.on('noGameFound', function(){
@@ -28,9 +28,9 @@ function answerSubmitted(num){
         
         //Hiding buttons from user
         document.getElementById('answer1').style.visibility = "hidden";
-        document.getElementById('answer2').style.visibility = "hidden";
-        document.getElementById('answer3').style.visibility = "hidden";
-        document.getElementById('answer4').style.visibility = "hidden";
+        // document.getElementById('answer2').style.visibility = "hidden";
+        // document.getElementById('answer3').style.visibility = "hidden";
+        // document.getElementById('answer4').style.visibility = "hidden";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Answer Submitted! Waiting on other players...";
         
@@ -55,9 +55,9 @@ socket.on('questionOver', function(data){
         document.getElementById('message').innerHTML = "Incorrect!";
     }
     document.getElementById('answer1').style.visibility = "hidden";
-    document.getElementById('answer2').style.visibility = "hidden";
-    document.getElementById('answer3').style.visibility = "hidden";
-    document.getElementById('answer4').style.visibility = "hidden";
+    // document.getElementById('answer2').style.visibility = "hidden";
+    // document.getElementById('answer3').style.visibility = "hidden";
+    // document.getElementById('answer4').style.visibility = "hidden";
     socket.emit('getScore');
 });
 
@@ -70,9 +70,9 @@ socket.on('nextQuestionPlayer', function(){
     playerAnswered = false;
     
     document.getElementById('answer1').style.visibility = "visible";
-    document.getElementById('answer2').style.visibility = "visible";
-    document.getElementById('answer3').style.visibility = "visible";
-    document.getElementById('answer4').style.visibility = "visible";
+    // document.getElementById('answer2').style.visibility = "visible";
+    // document.getElementById('answer3').style.visibility = "visible";
+    // document.getElementById('answer4').style.visibility = "visible";
     document.getElementById('message').style.display = "none";
     document.body.style.backgroundColor = "white";
     
@@ -94,9 +94,9 @@ socket.on('playerGameData', function(data){
 socket.on('GameOver', function(){
     document.body.style.backgroundColor = "#FFFFFF";
     document.getElementById('answer1').style.visibility = "hidden";
-    document.getElementById('answer2').style.visibility = "hidden";
-    document.getElementById('answer3').style.visibility = "hidden";
-    document.getElementById('answer4').style.visibility = "hidden";
+    // document.getElementById('answer2').style.visibility = "hidden";
+    // document.getElementById('answer3').style.visibility = "hidden";
+    // document.getElementById('answer4').style.visibility = "hidden";
     document.getElementById('message').style.display = "block";
     document.getElementById('message').innerHTML = "GAME OVER";
 });
