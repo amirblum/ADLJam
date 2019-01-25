@@ -59,6 +59,10 @@
 #nextQButton{
     display: none;
 }
+
+#collectAns{
+}
+
 #question{
     font-family: 'Raleway', sans-serif;
 }
