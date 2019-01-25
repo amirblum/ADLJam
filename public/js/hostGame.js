@@ -18,14 +18,10 @@ socket.on('noGameFound', function(){
 });
 
 socket.on('gameQuestions', function(data){
+    document.getElementById('scene').innerHTML = data.s1;
+    document.getElementById('img').innerHTML = data.i1;
     document.getElementById('question').innerHTML = data.q1;
-    document.getElementById('answer1').innerHTML = data.a1;
-    document.getElementById('answer2').innerHTML = data.a2;
-    document.getElementById('answer3').innerHTML = data.a3;
-    document.getElementById('answer4').innerHTML = data.a4;
-    var correctAnswer = data.correct;
     document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
-    updateTimer();
 });
 
 socket.on('updatePlayersAnswered', function(data){
@@ -33,15 +29,10 @@ socket.on('updatePlayersAnswered', function(data){
 });
 
 socket.on('questionOver', function(playerData, correct){
-    clearInterval(timer);
     var answer1 = 0;
-    var answer2 = 0;
-    var answer3 = 0;
-    var answer4 = 0;
     var total = 0;
     //Hide elements on page
     document.getElementById('playersAnswered').style.display = "none";
-    document.getElementById('timerText').style.display = "none";
     
     //Shows user correct answer with effects on elements
     if(correct == 1){
@@ -121,16 +112,10 @@ function nextQuestion(){
     socket.emit('nextQuestion'); //Tell server to start new question
 }
 
-function updateTimer(){
-    time = 20;
-    timer = setInterval(function(){
-        time -= 1;
-        document.getElementById('num').textContent = " " + time;
-        if(time == 0){
-            socket.emit('timeUp');
-        }
-    }, 1000);
+function collectAnswers(){
+    socket.emit('collectAnswers');
 }
+
 socket.on('GameOver', function(data){
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('square1').style.display = "none";
@@ -146,8 +131,6 @@ socket.on('GameOver', function(data){
     document.getElementById('question').innerHTML = "GAME OVER";
     document.getElementById('playersAnswered').innerHTML = "";
     
-    
-    
     document.getElementById('winner1').style.display = "block";
     document.getElementById('winner2').style.display = "block";
     document.getElementById('winner3').style.display = "block";
@@ -161,32 +144,3 @@ socket.on('GameOver', function(data){
     document.getElementById('winner4').innerHTML = "4. " + data.num4; 
     document.getElementById('winner5').innerHTML = "5. " + data.num5;
 });
-
-
-
-socket.on('getTime', function(player){
-    socket.emit('time', {
-        player: player,
-        time: time
-    });
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
