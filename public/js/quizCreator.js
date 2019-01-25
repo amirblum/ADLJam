@@ -4,10 +4,16 @@ var questionNum = 1; //Starts at two because question 1 is already present
 function updateDatabase(){
     //################################
     var questions = [];
+    var images = [];
+    var scenes = [];
     var name = document.getElementById('name').value;
     for(var i = 1; i <= questionNum; i++){
         var question = document.getElementById('q' + i).value;
+        var image = document.getElementById('img' + i).value;
+        var scene = document.getElementById('s' + i).value;
         questions.push({"question": question})
+        images.push({"image": image})
+        scenes.push({"scene": scene})
     }
     
     var quiz = {id: 0, "name": name, "questions": questions};
@@ -35,7 +41,7 @@ function addQuestion(){
     sceneField.setAttribute('class', 'scene');
     sceneField.setAttribute('id', 's' + String(questionNum));
     sceneField.maxLength = "5000";
-    sceneField.cols = "53";
+    sceneField.cols = "54";
     sceneField.rows = "10";
     sceneField.setAttribute('type', 'text');
 
@@ -44,22 +50,16 @@ function addQuestion(){
     questionField.setAttribute('class', 'question');
     questionField.setAttribute('id', 'q' + String(questionNum));
     questionField.setAttribute('type', 'text');
-    questionField.setAttribute('size', "53");
+    questionField.setAttribute('size', "54");
 
     imageLabel.innerHTML = "Image url " + String(questionNum) + ": ";
     imageField.setAttribute('class', 'question');
     imageField.setAttribute('id', 'img' + String(questionNum));
     imageField.setAttribute('type', 'text');
-    imageField.setAttribute('size', "53");
-    
-    
-    
+    imageField.setAttribute('size', "54");
     
     newQuestionDiv.setAttribute('id', 'question-field');//Sets class of div
-    
-    //need?
-
-    
+     
     newQuestionDiv.appendChild(sceneLabel);
     newQuestionDiv.appendChild(sceneField);
 
