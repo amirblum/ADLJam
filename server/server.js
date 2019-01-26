@@ -330,11 +330,13 @@ io.on('connection', (socket) => {
                         var scene = res[0].questions[questionNum].scene;
                         var question = res[0].questions[questionNum].question;
                         var img = res[0].questions[questionNum].img;
+                        var totalQuestions = res[0].questions.length;
 
                         socket.emit('gameQuestions', {
                             scene: scene,
                             question: question,
                             img: img,
+                            totalQuestions: totalQuestions,
                             playersInGame: playerData.length
                         });
                         

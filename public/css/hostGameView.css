@@ -102,14 +102,14 @@ body {
     font-family: 'Rubik', sans-serif;
 	direction: rtl;
 	text-align: center;
-	font-size: 35px;
+	font-size: 20px;
 	color: #ffffff;
 }
 #questionNum{
     font-family: 'Rubik', sans-serif;
 	direction: rtl;
 	text-align: center;
-	font-size: 35px;
+	font-size: 20px;
 	color: #ffffff;
 	
 }
@@ -117,13 +117,16 @@ body {
     font-family: 'Rubik', sans-serif;
 	direction: rtl;
 	text-align: center;
+	float: right;
 }
+
 #scene{
     font-family: 'Rubik', sans-serif;
 	direction: rtl;
 	text-align: center;
-	font-size: 35px;
+	font-size: 26px;
 	color: #ffffff;
+	font-weight: light;
 }
 #answers{
     font-family: 'Rubik', sans-serif;
