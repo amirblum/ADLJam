@@ -11,17 +11,19 @@
         <h4 id = "playersAnswered">Players Answered: 0 / x</h4>      
                 
         <h2 id = "scene">Scene</h2>
-        <img id = "img" src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/09/12/11/naturo-monkey-selfie.jpg?w968" alt="Scenery Image">
+        <div id = "img" >
+            <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/09/12/11/naturo-monkey-selfie.jpg?w968" alt="Scenery Image">
+        </div>
         <h3 id = "question">Question</h3>
         
         <br>
         <button onclick = "collectAnswers()" id = "collectAns">Collect Students' Answers</button>
 
-        <div class = "answers"></div>
+        <div id = "answers"></div>
 
         <button onclick = "collectPolls()" id = "collectPolls">Collect Polls</button>
 
-        <div class = "polls"></div>
+        <div id = "polls"></div>
 
         <button onclick = "nextQuestion()" id = "nextQButton">Next Question</button>
         

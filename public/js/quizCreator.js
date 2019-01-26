@@ -11,9 +11,9 @@ function updateDatabase(){
         
         var scene = document.getElementById('s' + i).value;
         var question = document.getElementById('q' + i).value;
-        var image = document.getElementById('img' + i).value;
+        var img = document.getElementById('img' + i).value;
         
-        questions.push({"scene": scene, "question": question, "image": image});
+        questions.push({"scene": scene, "question": question, "img": img});
     }
     
     var quiz = { id: 0, "name": name, "questions": questions };

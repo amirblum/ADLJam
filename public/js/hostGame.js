@@ -27,7 +27,7 @@ function nextQuestion(){
 
 socket.on('gameQuestions', function(data){
     document.getElementById('scene').innerHTML = data.scene;
-    document.getElementById('img').innerHTML = data.img;
+    document.getElementById('img').innerHTML = '<img src="' + data.img + '">';
     document.getElementById('question').innerHTML = data.question;
     document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
 });

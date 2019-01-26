@@ -44,6 +44,7 @@ socket.on('questionOver', function(playerData){
             //socket.emit('getScore');          Maybe will be used later
         }
     }
+});
 
 socket.on('newScore', function(data){
     document.getElementById('scoreText').innerHTML = "Score: " + data;
