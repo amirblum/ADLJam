@@ -3,9 +3,7 @@ var questionNum = 1; //Starts at two because question 1 is already present
 
 function updateDatabase(){
     //################################
-    var scenes = [];
     var questions = [];
-    var images = [];
     
     var name = document.getElementById('name').value;
     
@@ -15,12 +13,10 @@ function updateDatabase(){
         var question = document.getElementById('q' + i).value;
         var image = document.getElementById('img' + i).value;
         
-        scenes.push({"scene": scene})
-        questions.push({"question": question})
-        images.push({"image": image})
+        questions.push({"scene": scene, "question": question, "image": image});
     }
     
-    var quiz = { id: 0, "name": name, "scenes": scenes, "questions": questions, "images": images };
+    var quiz = { id: 0, "name": name, "questions": questions };
     socket.emit('newQuiz', quiz);
 }
 
