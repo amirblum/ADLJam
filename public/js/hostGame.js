@@ -4,7 +4,7 @@ var params = jQuery.deparam(window.location.search); //Gets the id from url
 var currentQuestion = 0;
 
 var sceneText = document.getElementById('scene'),
-    questionText = document.getElementById('question'),
+    message = document.getElementById('question'),
     image = document.getElementById('img'),
     answersContainer = document.getElementById("answers"),
     pollsContainer = document.getElementById("polls"),
@@ -44,17 +44,19 @@ socket.on('gameQuestions', function(data){
     currentQuestion++;
 
     sceneText.innerHTML = data.scene;
-    questionText.innerHTML = data.question;
+    message.innerHTML = data.question;
     image.innerHTML = '<img src="' + data.img + '">';
 
     showElement(sceneText);
-    showElement(questionText);
+    showElement(message);
     showElement(image);
 
-    showElement(collectAButton)
+    showElement(collectAButton);
 
-    hideElement(collectPButton)
-    hideElement(nextQButton)
+    hideElement(answersContainer);
+    hideElement(pollsContainer);
+    hideElement(collectPButton);
+    hideElement(nextQButton);
 
     showElement(playersResponded);
     
@@ -73,7 +75,7 @@ function collectAnswers(){
 socket.on('questionOver', function(playerData){
     //Hide elements on page
     hideElement(sceneText);
-    hideElement(questionText);
+    hideElement(message);
     hideElement(image);
     hideElement(collectAButton)
 
@@ -103,6 +105,7 @@ socket.on('updatePlayersVoted', function(data){
 socket.on('votingOver', function(playerData){
     // Hide answers
     hideElement(answersContainer);
+    hideElement(collectPButton);
 
     for (let i = 0; i < playerData.length; i++) {
         var poll = document.createElement("h3");
@@ -115,7 +118,7 @@ socket.on('votingOver', function(playerData){
 });
 
 socket.on('GameOver', function(data){
-    showElement(questionText);
+    showElement(message);
 
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('question').innerHTML = "GAME OVER";

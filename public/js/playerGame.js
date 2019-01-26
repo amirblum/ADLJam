@@ -6,11 +6,23 @@ var score = 0;
 
 var params = jQuery.deparam(window.location.search); //Gets the id from url
 
+var answerArea = document.getElementById('answerArea'),
+    message = document.getElementById('message'),
+    answersContainer = document.getElementById("othersAnswers");
+
+function hideElement(element){
+    element.style.display = "none";
+}
+
+function showElement(element){
+    element.style.display = "block";    
+}
+
 socket.on('connect', function() {
     //Tell server that it is host connection from game view
     socket.emit('player-join-game', params);
     
-    document.getElementById('answer').style.visibility = "visible";
+    showElement(answerArea);
 });
 
 socket.on('noGameFound', function(){
@@ -25,26 +37,25 @@ function playerAnswer(){
         socket.emit('playerAnswer', answer);//Sends player answer to server
         
         //Hiding buttons from user
-        document.getElementById('answer').style.visibility = "hidden";
-        document.getElementById('message').style.display = "block";
-        document.getElementById('message').innerHTML = "Answer Submitted! Waiting on other players...";
-        
+        message.innerHTML = "Answer Submitted! Waiting on other players...";
+        hideElement(answerArea);
     }
 }
 
 socket.on('questionOver', function(playerData){
-    var container = document.getElementById("othersAnswers");
+    message.innerText = "Vote on the answer you most identify with";
+
+    // Show other answers
     for (let i = 0; i < playerData.length; i++) {
         if(playerData[i].playerId != socket.id){
             var button = document.createElement("button");
             button.innerHTML = playerData[i].gameData.answer;
             button.setAttribute('onClick', "voteForAnswer('" + playerData[i].playerId + "')");
             button.setAttribute('id', 'voteButton');
-            container.appendChild(button);
-            // document.getElementById('answer').style.visibility = "hidden";
-            //socket.emit('getScore');          Maybe will be used later
+            answersContainer.appendChild(button);
         }
     }
+    showElement(answersContainer);
 });
 
 function voteForAnswer(votedForID) {
@@ -56,14 +67,12 @@ socket.on('newScore', function(data){
 });
 
 socket.on('nextQuestionPlayer', function(data){
-    correct = false;
     playerAnswered = false;
     
-    document.getElementById('answer').style.visibility = "visible";
-    // document.getElementById('message').style.display = "none";
-    document.getElementById('message').innerText = data;
-    document.body.style.backgroundColor = "white";
-    
+    showElement(answerArea);
+    hideElement(answersContainer);
+
+    message.innerText = data.question;
 });
 
 socket.on('hostDisconnect', function(){
