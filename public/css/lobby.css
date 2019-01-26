@@ -1,7 +1,14 @@
+body {
+	background-color: #4C164B
+}
 #title1, #title2{
     text-align: center;
-    color: white;
-    font-family: 'Raleway', sans-serif;
+    color: white;    
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;	
+	font-size: 28px;
+	color: #ffffff;
+    padding: 0px 10px;
 }
 #title2{
     font-size: 15px;
@@ -9,23 +16,23 @@
 
 @keyframes bgcolor {
     0% {
-        background-color: #45a3e5
+        background-color: #1B1464
     }
 
     30% {
-        background-color: #66bf39
+        background-color: #4C164B
     }
 
     60% {
-        background-color: #eb670f
+        background-color: #6d2443
     }
 
     90% {
-        background-color: #f35
+        background-color: #1B1464
     }
 
     100% {
-        background-color: #864cbf
+        background-color: #4C164B
     }
 }
 

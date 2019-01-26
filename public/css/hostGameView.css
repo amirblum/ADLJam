@@ -1,3 +1,6 @@
+body {
+	background-color: #4C164B
+}
 #answer1{
     background-color: #4CAF50;
     margin: auto;
@@ -57,14 +60,68 @@
 }
 
 #nextQButton{
-    display: none;
+    
+    width: 50%;
+    background-color: #009245;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 28px;    	
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;
+    text-align: center;
 }
 
 #collectAns{
+    
+    width: 50%;
+    background-color: #009245;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 28px;    	
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;
+    text-align: center;
+}
+
+#collectPolls{
+    
+    width: 50%;
+    background-color: #009245;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 28px;    	
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;
+    text-align: center;
 }
 
 #question{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Rubik', sans-serif;
+	direction: rtl;
+	text-align: center;
+	font-size: 35px;
+	color: #ffffff;
 }
 #timerText{
     font-family: 'Raleway', sans-serif;
@@ -74,12 +131,46 @@
     font-size: 35px;
 }
 #playersAnswered{
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Rubik', sans-serif;
+	direction: rtl;
+	text-align: center;
+	font-size: 35px;
+	color: #ffffff;
 }
 #questionNum{
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Rubik', sans-serif;
+	direction: rtl;
+	text-align: center;
+	font-size: 35px;
+	color: #ffffff;
+	
 }
-
+#img{
+    font-family: 'Rubik', sans-serif;
+	direction: rtl;
+	text-align: center;
+}
+#scene{
+    font-family: 'Rubik', sans-serif;
+	direction: rtl;
+	text-align: center;
+	font-size: 35px;
+	color: #ffffff;
+}
+#answers{
+    font-family: 'Rubik', sans-serif;
+	direction: rtl;
+	text-align: center;
+	font-size: 20px;
+	color: #ffffff;
+}
+#polls{
+    font-family: 'Rubik', sans-serif;
+	direction: rtl;
+	text-align: center;
+	font-size: 20px;
+	color: #ffffff;
+}
 #winner1{
     font-family: 'Raleway', sans-serif;
     text-align: center;
@@ -114,4 +205,21 @@
     font-size: 35px;
     color: #3399ff;
     display: none;
+}
+#greenButton{
+    width: 50%;
+    background-color: #009245;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 28px;    	
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;
+    text-align: center;
 }

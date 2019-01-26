@@ -1,22 +1,22 @@
 @keyframes bgcolor {
     0% {
-        background-color: #45a3e5
+        background-color: #1B1464
     }
 
     30% {
-        background-color: #66bf39
+        background-color: #4C164B
     }
 
     60% {
-        background-color: #eb670f
+        background-color: #6d2443
     }
 
     90% {
-        background-color: #f35
+        background-color: #1B1464
     }
 
     100% {
-        background-color: #864cbf
+        background-color: #4C164B
     }
 }
 
@@ -27,16 +27,20 @@ body {
     animation-direction: alternate;
 }
 #title{
-    color:white;
-    font-family: 'Raleway', sans-serif;
-    font-size: 35px;
     text-align: center;
+    color: white;    
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;	
+	font-size: 28px;
+	color: #ffffff;
 }
 #gamePinText{
     text-align: center;
-    color: white;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 50px;
+    color: white;    
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;	
+	font-size: 28px;
+	color: #ffffff;
 }
 #players{
     display: block;
@@ -45,22 +49,27 @@ body {
     text-align: center;
     font-size: 20px;
     resize: none;
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;
+	font-size: 28px;
+	color: #ffffff;
+	
 }
 
 #start{
-    background-color: #3A3B3A;
-    border: none;
+    width: 80%;
+    background-color: #009245;
     color: white;
-    padding: 15px 100px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
     display: block;
-    margin-left: auto;
     margin-right: auto;
-    font-size: 25px;
-    font-family: 'Raleway', sans-serif;
+    margin-left: auto;
+    font-size: 28px;    	
+	font-family: 'Rubik', sans-serif;
+	direction: rtl;
+    text-align: center;
 }

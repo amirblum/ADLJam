@@ -16,13 +16,8 @@ socket.on('noGameFound', function(){
 
 function nextQuestion(){
     document.getElementById('nextQButton').style.display = "none";
-    
-    // document.getElementById('answer1').style.filter = "none";
-    // document.getElementById('answer2').style.filter = "none";
-    // document.getElementById('answer3').style.filter = "none";
-    // document.getElementById('answer4').style.filter = "none";
-    
     document.getElementById('playersResponded').style.display = "block";
+    
     socket.emit('nextQuestion'); //Tell server to start new question
 }
 
