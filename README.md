@@ -1,4 +1,4 @@
-# kahoot-clone-nodejs
+# forceofattraction
 <h3>INSTRUCTIONS:</h3>
 <ol>
   <li>Install MongoDB: 'Sudo apt-get install mongodb'</li>
@@ -8,7 +8,7 @@
 </ol>
 <br>
 <h3>Description</h3>
-<h5>This project is a kahoot clone that uses nodejs and mongodb</h5>
+<h5>This project started as a kahoot clone that uses nodejs and mongodb</h5>
 <h5>Multiple games can be ongoing at one time and works with many players per game</h5>
 <h3>Screen Shots:</h3>
 <img src="Screenshots/join.png" height="200" width="auto" alt="Player Join"/>
