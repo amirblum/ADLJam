@@ -1,4 +1,5 @@
 //Import dependencies
+const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const express = require('express');
@@ -24,11 +25,39 @@ app.use(express.static(publicPath));
 //Starting server on port 3000
 server.listen(3000, () => {
     console.log("Server started on port 3000");
+
+    // Add default quizes if needed
+    MongoClient.connect(url, function(err, db){
+        if (err) throw err;
+        var dbo = db.db('kahootDB');
+        dbo.collection('kahootGames').find({}).toArray(function(err, result){
+            if(err) throw err;
+            if(Object.keys(result).length == 0){
+                // No quizes found, load the defaults
+                fs.readdir('./quizes/', (err, files) => {
+                    if(err) throw err;
+                    
+                    let num = 1;
+                    files.forEach(file => {
+                        var game = require('../quizes/' + file);
+                        game.id = num++;
+    
+                        console.log('Adding default quiz: ' + game.name);
+    
+                        dbo.collection("kahootGames").insertOne(game, function(err, res) {
+                            if (err) throw err;
+                            db.close();
+                        });
+                    });
+                })
+            }
+        });
+    });
 });
 
 //When a connection to server is made from client
 io.on('connection', (socket) => {
-    
+
     //When host connects for the first time
     socket.on('host-join', (data) =>{
         
@@ -436,12 +465,11 @@ io.on('connection', (socket) => {
             var dbo = db.db('kahootDB');
             dbo.collection("kahootGames").find().toArray(function(err, res) {
                 if (err) throw err;
+
                 socket.emit('gameNamesData', res);
                 db.close();
             });
-        });
-        
-         
+        }); 
     });
     
     
@@ -453,8 +481,8 @@ io.on('connection', (socket) => {
                 if(err) throw err;
                 var num = Object.keys(result).length;
                 if(num == 0){
-                	data.id = 1
-                	num = 1
+                	data.id = 1;
+                	num = 1;
                 }else{
                 	data.id = result[num -1 ].id + 1;
                 }
@@ -466,12 +494,8 @@ io.on('connection', (socket) => {
                 db.close();
                 socket.emit('startGameFromCreator', num);
             });
-            
         });
-        
-        
     });
-    
 });
 
 
