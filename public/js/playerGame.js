@@ -17,8 +17,8 @@ socket.on('noGameFound', function(){
     window.location.href = '../../';//Redirect user to 'join game' page 
 });
 
-function answerSubmitted(){
-    var answer = document.getElementById('text').innerHTML;
+function playerAnswer(){
+    var answer = document.getElementById('text').value;
     if(playerAnswered == false){
         playerAnswered = true;
         
@@ -32,26 +32,18 @@ function answerSubmitted(){
     }
 }
 
-//Get results on last question
-socket.on('answerResult', function(data){
-    if(data == true){
-        correct = true;
+socket.on('questionOver', function(playerData){
+    var ans;
+    var container = document.getElementById("othersAnswers");
+    for (let i = 0; i < playerData.length; i++) {
+        if(playerData[i].playerId != socket.id){
+            ans = document.createElement("button");
+            ans.innerHTML = playerData[i].gameData.answer;
+            container.appendChild(ans);
+            // document.getElementById('answer').style.visibility = "hidden";
+            //socket.emit('getScore');          Maybe will be used later
+        }
     }
-});
-
-socket.on('questionOver', function(data){
-    if(correct == true){
-        document.body.style.backgroundColor = "#4CAF50";
-        document.getElementById('message').style.display = "block";
-        document.getElementById('message').innerHTML = "Correct!";
-    }else{
-        document.body.style.backgroundColor = "#f94a1e";
-        document.getElementById('message').style.display = "block";
-        document.getElementById('message').innerHTML = "Incorrect!";
-    }
-    document.getElementById('answer').style.visibility = "hidden";
-    socket.emit('getScore');
-});
 
 socket.on('newScore', function(data){
     document.getElementById('scoreText').innerHTML = "Score: " + data;

@@ -13,7 +13,10 @@
         <h2 id = "message"></h2>
         <textarea id="text"></textarea>
         <br>
-        <button onclick = "answerSubmitted()" id = "answer">Send</button>
+        <button onclick = "playerAnswer()" id = "answer">Send</button>
+
+        <div class = "othersAnswers"></div>
+
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/libs/jqueryLibrary.js"></script>
         <script src = "../../js/libs/deparam.js"></script>
