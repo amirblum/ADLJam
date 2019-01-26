@@ -17,10 +17,7 @@ var players = new Players();
 
 //Mongodb setup
 var MongoClient = require('mongodb').MongoClient;
-var mongoose = require('mongoose');
 var url = "mongodb://localhost:27017/";
-
-
 
 app.use(express.static(publicPath));
 
@@ -92,12 +89,12 @@ io.on('connection', (socket) => {
                     
                     var scene = res[0].questions[0].scene;
                     var question = res[0].questions[0].question;
-                    var imgurl = res[0].questions[0].imgurl;
+                    var img = res[0].questions[0].img;
                     
                     socket.emit('gameQuestions', {
                         scene: scene,
                         question: question,
-                        img: imgurl,
+                        img: img,
                         playersInGame: playerData.length
                     });
                     db.close();
