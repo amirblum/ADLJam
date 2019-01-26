@@ -3,9 +3,28 @@ var params = jQuery.deparam(window.location.search); //Gets the id from url
 
 var currentQuestion = 0;
 
+var sceneText = document.getElementById('scene'),
+    questionText = document.getElementById('question'),
+    image = document.getElementById('img'),
+    answersContainer = document.getElementById("answers"),
+    pollsContainer = document.getElementById("polls"),
+    questionNum = document.getElementById('questionNum'),
+    playersResponded = document.getElementById('playersResponded'),
+    collectAButton = document.getElementById('collectAns'),
+    collectPButton = document.getElementById('collectPolls'),
+    nextQButton = document.getElementById('nextQButton');
+
+
+function hideElement(element){
+    element.style.display = "none";
+}
+
+function showElement(element){
+    element.style.display = "block";    
+}
+
 //When host connects to server
 socket.on('connect', function(data) {
-    
     //Tell server that it is host connection from game view
     socket.emit('host-join-game', params);
 });
@@ -15,20 +34,32 @@ socket.on('noGameFound', function(){
 });
 
 function nextQuestion(){
-    document.getElementById('nextQButton').style.display = "none";
-    document.getElementById('playersResponded').style.display = "block";
-    
+    hideElement(nextQButton)
+    hideElement(collectPButton)
+
     socket.emit('nextQuestion'); //Tell server to start new question
 }
 
 socket.on('gameQuestions', function(data){
     currentQuestion++;
 
-    document.getElementById('scene').innerHTML = data.scene;
-    document.getElementById('img').innerHTML = '<img src="' + data.img + '">';
-    document.getElementById('question').innerHTML = data.question;
-    document.getElementById('questionNum').innerHTML = "Question " + currentQuestion + " / " + data.totalQuestions;
-    document.getElementById('playersResponded').innerHTML = "Players Answered 0 / " + data.playersInGame;
+    sceneText.innerHTML = data.scene;
+    questionText.innerHTML = data.question;
+    image.innerHTML = '<img src="' + data.img + '">';
+
+    showElement(sceneText);
+    showElement(questionText);
+    showElement(image);
+
+    showElement(collectAButton)
+
+    hideElement(collectPButton)
+    hideElement(nextQButton)
+
+    showElement(playersResponded);
+    
+    questionNum.innerHTML = "Question " + currentQuestion + " / " + data.totalQuestions;
+    playersResponded.innerHTML = "Players Answered 0 / " + data.playersInGame;
 });
 
 socket.on('updatePlayersAnswered', function(data){
@@ -40,15 +71,25 @@ function collectAnswers(){
 }
 
 socket.on('questionOver', function(playerData){
-    var ans;
-    var container = document.getElementById("answers");
-    for (let i = 0; i < playerData.length; i++) {
-        ans = document.createElement("h3");
-        ans.innerHTML = playerData[i].gameData.answer;
-        container.appendChild(ans);
-    }
     //Hide elements on page
-    document.getElementById('playersResponded').innerHTML = "Players Voted 0 / " + playerData.length;
+    hideElement(sceneText);
+    hideElement(questionText);
+    hideElement(image);
+    hideElement(collectAButton)
+
+    showElement(collectPButton);
+
+    // Setup voting
+    for (let i = 0; i < playerData.length; i++) {
+        var ans = document.createElement("h3");
+        ans.innerHTML = playerData[i].gameData.answer;
+        ans.setAttribute('id', 'answer');
+
+        answersContainer.appendChild(ans);
+    }
+    showElement(answersContainer);
+
+    playersResponded.innerHTML = "Players Voted 0 / " + playerData.length;
 });
 
 function collectPolls(){
@@ -60,25 +101,22 @@ socket.on('updatePlayersVoted', function(data){
 });
 
 socket.on('votingOver', function(playerData){
-    var poll;
-    var container = document.getElementById("polls");
+    // Hide answers
+    hideElement(answersContainer);
 
     for (let i = 0; i < playerData.length; i++) {
-        poll = document.createElement("h3");
+        var poll = document.createElement("h3");
         poll.innerHTML = playerData[i].gameData.answer + ': ' + playerData[i].gameData.numVotes;
-        container.appendChild(poll);
+        pollsContainer.appendChild(poll);
     }
-    
-    document.getElementById('nextQButton').style.display = "block";
-});
 
-
-
-socket.on('AnswersRecived', function(arr){
-
+    showElement(pollsContainer);
+    showElement(nextQButton);
 });
 
 socket.on('GameOver', function(data){
+    showElement(questionText);
+
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('question').innerHTML = "GAME OVER";
     document.getElementById('playersResponded').innerHTML = "";
