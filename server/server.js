@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
                 if(result[0] !== undefined){
                     var gamePin = Math.floor(Math.random()*90000) + 10000; //new pin for game
 
-                    games.addGame(gamePin, socket.id, false, {playersAnswered: 0, playersVoted: 0, questionLive: false, pollingLive: false, gameid: data.id, question: 1}); //Creates a game with pin and host id
+                    games.addGame(gamePin, socket.id, false, {playersAnswered: 0, playersVoted: 0, questionLive: false, votingLive: false, gameid: data.id, question: 1}); //Creates a game with pin and host id
 
                     var game = games.getGame(socket.id); //Gets the game data
 
@@ -119,11 +119,13 @@ io.on('connection', (socket) => {
                     var scene = res[0].questions[0].scene;
                     var question = res[0].questions[0].question;
                     var img = res[0].questions[0].img;
+                    var totalQuestions = res[0].questions.length;
                     
                     socket.emit('gameQuestions', {
                         scene: scene,
                         question: question,
                         img: img,
+                        totalQuestions: totalQuestions,
                         playersInGame: playerData.length
                     });
                     db.close();
@@ -243,6 +245,7 @@ io.on('connection', (socket) => {
             //Checks if all players answered
             if(game.gameData.playersAnswered == playerNum.length){
                 game.gameData.questionLive = false; //Question has been ended bc players all answered under time
+                game.gameData.votingLive = true; //Question has been ended bc players all answered under time
                 var playerData = players.getPlayers(game.hostId);
                 io.to(game.pin).emit('questionOver', playerData);//Tell everyone that question is over
             }else{
@@ -257,20 +260,21 @@ io.on('connection', (socket) => {
 
     //Sets data in player class to answer from player
     socket.on('playerVote', function(voteID){
+        var player = players.getPlayer(socket.id);
         var votedForPlayer = players.getPlayer(voteID);
         var hostId = player.hostId;
         var playerNum = players.getPlayers(hostId);
         var game = games.getGame(hostId);
-        if(game.gameData.questionLive == true) {//if the voting is still live
+        if(game.gameData.votingLive == true) {//if the voting is still live
             votedForPlayer.gameData.numVotes++;
             votedForPlayer.gameData.score += 100;
             game.gameData.playersVoted += 1;
 
             //Checks if all players voted
             if(game.gameData.playersVoted == playerNum.length){
-                game.gameData.pollingLive = false; //Polling has been ended bc players all voted
+                game.gameData.votingLive = false; //voting has been ended bc players all voted
                 var playerData = players.getPlayers(game.hostId);
-                io.to(game.pin).emit('pollingOver', playerData);//Tell everyone that polling is over
+                io.to(game.pin).emit('votingOver', playerData);//Tell everyone that voting is over
             }else{
                 //update host screen of num players answered
                 io.to(game.pin).emit('updatePlayersVoted', {
@@ -423,6 +427,7 @@ io.on('connection', (socket) => {
     socket.on('collectAnswers', function(){
         var game = games.getGame(socket.id);
         game.gameData.questionLive = false;
+        game.gameData.votingLive = true;
 
         var playerData = players.getPlayers(game.hostId);
         io.to(game.pin).emit('questionOver', playerData);
@@ -430,7 +435,7 @@ io.on('connection', (socket) => {
 
     socket.on('collectPolls', function(){
         var game = games.getGame(socket.id);
-        game.gameData.pollingLive = false;
+        game.gameData.votingLive = false;
         var playerData = players.getPlayers(game.hostId);
         
         var gameid = game.gameData.gameid;
@@ -442,7 +447,7 @@ io.on('connection', (socket) => {
                 var query = { id:  parseInt(gameid)};
                 dbo.collection("kahootGames").find(query).toArray(function(err, res) {
                     if (err) throw err;
-                    io.to(game.pin).emit('pollingOver', playerData);
+                    io.to(game.pin).emit('votingOver', playerData);
                     
                     db.close();
                 });

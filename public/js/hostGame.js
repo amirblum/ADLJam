@@ -1,9 +1,10 @@
 var socket = io();
 var params = jQuery.deparam(window.location.search); //Gets the id from url
 
+var currentQuestion = 0;
 
 //When host connects to server
-socket.on('connect', function() {
+socket.on('connect', function(data) {
     
     //Tell server that it is host connection from game view
     socket.emit('host-join-game', params);
@@ -21,19 +22,22 @@ function nextQuestion(){
     // document.getElementById('answer3').style.filter = "none";
     // document.getElementById('answer4').style.filter = "none";
     
-    document.getElementById('playersAnswered').style.display = "block";
+    document.getElementById('playersResponded').style.display = "block";
     socket.emit('nextQuestion'); //Tell server to start new question
 }
 
 socket.on('gameQuestions', function(data){
+    currentQuestion++;
+
     document.getElementById('scene').innerHTML = data.scene;
     document.getElementById('img').innerHTML = '<img src="' + data.img + '">';
     document.getElementById('question').innerHTML = data.question;
-    document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
+    document.getElementById('questionNum').innerHTML = "Question " + currentQuestion + " / " + data.totalQuestions;
+    document.getElementById('playersResponded').innerHTML = "Players Answered 0 / " + data.playersInGame;
 });
 
 socket.on('updatePlayersAnswered', function(data){
-    document.getElementById('playersAnswered').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame; 
+    document.getElementById('playersResponded').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame; 
 });
 
 function collectAnswers(){
@@ -49,7 +53,7 @@ socket.on('questionOver', function(playerData){
         container.appendChild(ans);
     }
     //Hide elements on page
-    document.getElementById('playersAnswered').style.display = "none";
+    document.getElementById('playersResponded').innerHTML = "Players Voted 0 / " + playerData.length;
 });
 
 function collectPolls(){
@@ -57,10 +61,10 @@ function collectPolls(){
 }
 
 socket.on('updatePlayersVoted', function(data){
-    document.getElementById('playersAnswered').innerHTML = "Players Voted " + data.playersVoted + " / " + data.playersInGame; 
+    document.getElementById('playersResponded').innerHTML = "Players Voted " + data.playersVoted + " / " + data.playersInGame; 
 });
 
-socket.on('pollingOver', function(playerData){
+socket.on('votingOver', function(playerData){
     var poll;
     var container = document.getElementById("polls");
 
@@ -82,5 +86,5 @@ socket.on('AnswersRecived', function(arr){
 socket.on('GameOver', function(data){
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('question').innerHTML = "GAME OVER";
-    document.getElementById('playersAnswered').innerHTML = "";
+    document.getElementById('playersResponded').innerHTML = "";
 });

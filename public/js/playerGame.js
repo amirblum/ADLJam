@@ -33,29 +33,35 @@ function playerAnswer(){
 }
 
 socket.on('questionOver', function(playerData){
-    var ans;
     var container = document.getElementById("othersAnswers");
     for (let i = 0; i < playerData.length; i++) {
         if(playerData[i].playerId != socket.id){
-            ans = document.createElement("button");
-            ans.innerHTML = playerData[i].gameData.answer;
-            container.appendChild(ans);
+            var button = document.createElement("button");
+            button.innerHTML = playerData[i].gameData.answer;
+            button.setAttribute('onClick', "voteForAnswer('" + playerData[i].playerId + "')");
+            button.setAttribute('id', 'voteButton');
+            container.appendChild(button);
             // document.getElementById('answer').style.visibility = "hidden";
             //socket.emit('getScore');          Maybe will be used later
         }
     }
 });
 
+function voteForAnswer(votedForID) {
+    socket.emit('playerVote', votedForID);
+}
+
 socket.on('newScore', function(data){
     document.getElementById('scoreText').innerHTML = "Score: " + data;
 });
 
-socket.on('nextQuestionPlayer', function(){
+socket.on('nextQuestionPlayer', function(data){
     correct = false;
     playerAnswered = false;
     
     document.getElementById('answer').style.visibility = "visible";
-    document.getElementById('message').style.display = "none";
+    // document.getElementById('message').style.display = "none";
+    document.getElementById('message').innerText = data;
     document.body.style.backgroundColor = "white";
     
 });
