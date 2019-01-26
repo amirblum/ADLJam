@@ -22,9 +22,11 @@ var url = "mongodb://heroku_lw0wlxwv:e56d4tbujujf6iohn45f0ehue9@ds113495.mlab.co
 
 app.use(express.static(publicPath));
 
+var port = process.env.PORT || 3000;
+
 //Starting server on port 3000
-server.listen(3000, () => {
-    console.log("Server started on port 3000");
+server.listen(port, () => {
+    console.log("Server started on port " + port);
 
     // Add default quizes if needed
     MongoClient.connect(url, function(err, db){
