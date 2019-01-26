@@ -1,38 +1,6 @@
 body {
 	background-color: #4C164B
 }
-#answer1{
-    background-color: #4CAF50;
-    margin: auto;
-    padding: 30px 20px;
-    height: 50%;
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
-}
-#answer2{
-    background-color: #f94a1e;
-    margin: auto;
-    padding: 30px 20px;
-    height: 50%;
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
-}
-#answer3{
-    background-color: #3399ff;
-    margin: auto;
-    padding: 30px 20px;
-    height: 50%;
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
-}
-#answer4{
-    background-color: #ff9933;
-    margin: auto;
-    padding: 30px 20px;
-    height: 50%;
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
-}
 .square{
     border: none;
     padding: 15px 32px;
@@ -130,7 +98,7 @@ body {
     font-family: 'Tajawal', sans-serif;
     font-size: 35px;
 }
-#playersAnswered{
+#playersResponded{
     font-family: 'Rubik', sans-serif;
 	direction: rtl;
 	text-align: center;
